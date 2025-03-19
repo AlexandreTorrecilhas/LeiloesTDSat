@@ -30,20 +30,22 @@ public class ProdutosDAO {
     }
     
     public ArrayList<ProdutosDTO> listarProdutos(){
+        
         conn = new conectaDAO().connectDB();
         String selectTodosProdutos = "SELECT * FROM produtos";
         ArrayList<ProdutosDTO> resultado = new ArrayList();
-        ProdutosDTO produtosDTO = new ProdutosDTO();
+        ProdutosDTO produtosDTO;
         
         try{
             PreparedStatement stmt = conn.prepareStatement(selectTodosProdutos);
             resultset = stmt.executeQuery();
             while(resultset.next()){
+                produtosDTO = new ProdutosDTO();
                 produtosDTO.setId(resultset.getInt("id"));
                 produtosDTO.setNome(resultset.getString("nome"));
                 produtosDTO.setValor(resultset.getInt("valor"));
                 produtosDTO.setStatus(resultset.getString("status"));
-                resultado.add(produtosDTO);
+                resultado.addFirst(produtosDTO);
             }
             return resultado;
         }catch(SQLException erroAoPegarProdutos){
