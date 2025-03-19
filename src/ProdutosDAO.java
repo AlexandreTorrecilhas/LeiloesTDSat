@@ -8,6 +8,7 @@
  * @author Adm
  */
 
+
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
@@ -31,10 +32,16 @@ public class ProdutosDAO {
     public ArrayList<ProdutosDTO> listarProdutos(){
         conn = new conectaDAO().connectDB();
         String selectTodosProdutos = "SELECT * FROM produto";
+        ArrayList<ProdutosDTO> resultado;
+        ProdutosDTO produtosDTO = new ProdutosDTO();
         
         try{
             PreparedStatement stmt = conn.prepareStatement(selectTodosProdutos);
             resultset = stmt.executeQuery();
+            while(resultset.next()){
+                produtosDTO.setId(resultset.getInt("id"));
+                
+            }
         }catch(SQLException erroAoPegarProdutos){
             System.out.println("Classe: ProdutosDAO/Metodo: listarProdutos/Erro: " + erroAoPegarProdutos.getMessage());
         }

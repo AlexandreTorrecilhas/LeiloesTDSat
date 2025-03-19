@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class conectaDAO {
     
-    private String link = "jdbc:mysql://localhost:3306";
+    private String link = "jdbc:mysql://localhost:3306/senac";
     private String user = "senac2";
     private String senha = "mudar@123";
     
