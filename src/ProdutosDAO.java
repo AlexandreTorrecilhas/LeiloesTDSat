@@ -31,8 +31,8 @@ public class ProdutosDAO {
     
     public ArrayList<ProdutosDTO> listarProdutos(){
         conn = new conectaDAO().connectDB();
-        String selectTodosProdutos = "SELECT * FROM produto";
-        ArrayList<ProdutosDTO> resultado;
+        String selectTodosProdutos = "SELECT * FROM produtos";
+        ArrayList<ProdutosDTO> resultado = new ArrayList();
         ProdutosDTO produtosDTO = new ProdutosDTO();
         
         try{
@@ -40,12 +40,16 @@ public class ProdutosDAO {
             resultset = stmt.executeQuery();
             while(resultset.next()){
                 produtosDTO.setId(resultset.getInt("id"));
-                
+                produtosDTO.setNome(resultset.getString("nome"));
+                produtosDTO.setValor(resultset.getInt("valor"));
+                produtosDTO.setStatus(resultset.getString("status"));
+                resultado.add(produtosDTO);
             }
+            return resultado;
         }catch(SQLException erroAoPegarProdutos){
             System.out.println("Classe: ProdutosDAO/Metodo: listarProdutos/Erro: " + erroAoPegarProdutos.getMessage());
+            return null;
         }
-        return listagem;
     }
     
     
