@@ -26,6 +26,33 @@ public class ProdutosDAO {
     
     public void cadastrarProduto (ProdutosDTO produto){
         conn = new conectaDAO().connectDB();
+        String inserirProduto = "INSERT INTO produtos(nome, valor, status) "
+                + "VALUES (?,?,?)";
+        
+        try{
+            PreparedStatement stmt = conn.prepareStatement(inserirProduto);
+            stmt.setString(1, produto.getNome());
+            stmt.setInt(2, produto.getValor());
+            stmt.setString(3, produto.getStatus());
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Valor cadastrado com sucesso");
+        }catch(SQLException erroAoInserirValor){
+            System.out.println("Classe: ProdutosDAO/Metodo: venderProduto/Erro: " + erroAoInserirValor.getMessage());
+        }     
+    }
+    
+    public void venderProduto(int idProduto){
+        conn = new conectaDAO().connectDB();
+        String deletarProduto = "DELETE FROM produtos WHERE id = ?";
+        
+        try{
+            PreparedStatement stmt = conn.prepareStatement(deletarProduto);
+            stmt.setInt(1, idProduto);
+            stmt.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Produto vendido");
+        }catch(SQLException erroAoExcluirProduto){
+            System.out.println("Classe: ProdutosDAO/Metodo: venderProduto/Erro: " + erroAoExcluirProduto.getMessage());
+        }
         
     }
     
