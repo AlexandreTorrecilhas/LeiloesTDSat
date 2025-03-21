@@ -49,6 +49,8 @@ public class ProdutosDAO {
             PreparedStatement stmt = conn.prepareStatement(deletarProduto);
             stmt.setInt(1, idProduto);
             stmt.executeUpdate();
+            stmt.close();
+            conn.close();
             JOptionPane.showMessageDialog(null, "Produto vendido");
         }catch(SQLException erroAoExcluirProduto){
             System.out.println("Classe: ProdutosDAO/Metodo: venderProduto/Erro: " + erroAoExcluirProduto.getMessage());
@@ -73,6 +75,8 @@ public class ProdutosDAO {
                 produtosDTO.setValor(resultset.getInt("valor"));
                 produtosDTO.setStatus(resultset.getString("status"));
                 resultado.addFirst(produtosDTO);
+                stmt.close();
+                conn.close();
             }
             return resultado;
         }catch(SQLException erroAoPegarProdutos){
@@ -81,7 +85,35 @@ public class ProdutosDAO {
         }
     }
     
-    
+    public ArrayList<ProdutosDTO> listarProdutosVendidos(){
+       
+        conn = new conectaDAO().connectDB();
+        PreparedStatement stmt;
+        String selectProdutosVendidos = "SELECT * FROM produtos "
+                + "WHERE status = ?";
+        ResultSet resultadoPesquisa;
+        ProdutosDTO produtosDto;
+        ArrayList<ProdutosDTO> resultado = new ArrayList();
+        
+        try{
+            stmt = conn.prepareStatement(selectProdutosVendidos);
+            resultadoPesquisa = stmt.executeQuery();
+            while(resultadoPesquisa.next()){
+                produtosDto = new ProdutosDTO();
+                produtosDto.setId(resultadoPesquisa.getInt("id"));
+                produtosDto.setNome(resultadoPesquisa.getString("nome"));
+                produtosDto.setValor(resultadoPesquisa.getInt("valor"));
+                produtosDto.setStatus(resultadoPesquisa.getString("status"));
+                resultado.add(produtosDto);
+            }
+            stmt.close();
+            conn.close();
+            return resultado;
+        }catch(SQLException erroAoPesquisarProdutosVendidos){
+            System.out.println("Classe: ProdutosDAO/Metodo: listarProdutosVendidos/Erro: " + erroAoPesquisarProdutosVendidos.getMessage());
+            return null;
+        }
+    }
     
         
 }
