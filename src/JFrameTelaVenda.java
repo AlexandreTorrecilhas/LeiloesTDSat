@@ -9,7 +9,8 @@
  */
 
 import java.util.ArrayList;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JFrame;
 
 public class JFrameTelaVenda extends javax.swing.JFrame {
 
@@ -117,8 +118,7 @@ public class JFrameTelaVenda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
-        
-        
+        listarProdutosVendidos();
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
     /**
@@ -126,12 +126,20 @@ public class JFrameTelaVenda extends javax.swing.JFrame {
      */
     
     private void listarProdutosVendidos(){
-        ArrayList<ProdutosDTO> produtos = new ArrayList();
+        ArrayList<ProdutosDTO> produtos = this.produtosDAO.listarProdutosVendidos();
         int quantidadeColuna = this.tblVenda.getModel().getColumnCount();
         int quantidadeLinha = this.tblVenda.getModel().getRowCount();
-        TableModel modeloTabela = this.tblVenda.getModel();
+        DefaultTableModel modeloTabela = (DefaultTableModel) this.tblVenda.getModel();
+        modeloTabela.setRowCount(0);
         
-        
+        for(int i = 0; i < quantidadeLinha; i++){
+            modeloTabela.addRow(new Object[]{
+                produtos.get(i).getId(),
+                produtos.get(i).getNome(),
+                produtos.get(i).getValor(),
+                produtos.get(i).getStatus()
+            });
+        }
     }
     
     public static void main(String args[]) {

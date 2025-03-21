@@ -75,9 +75,9 @@ public class ProdutosDAO {
                 produtosDTO.setValor(resultset.getInt("valor"));
                 produtosDTO.setStatus(resultset.getString("status"));
                 resultado.addFirst(produtosDTO);
-                stmt.close();
-                conn.close();
             }
+            stmt.close();
+            conn.close();
             return resultado;
         }catch(SQLException erroAoPegarProdutos){
             System.out.println("Classe: ProdutosDAO/Metodo: listarProdutos/Erro: " + erroAoPegarProdutos.getMessage());
@@ -96,7 +96,9 @@ public class ProdutosDAO {
         ArrayList<ProdutosDTO> resultado = new ArrayList();
         
         try{
+            
             stmt = conn.prepareStatement(selectProdutosVendidos);
+            stmt.setString(1, "Vendido");
             resultadoPesquisa = stmt.executeQuery();
             while(resultadoPesquisa.next()){
                 produtosDto = new ProdutosDTO();
